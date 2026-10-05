@@ -106,13 +106,31 @@ pre code, pre code {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
     gap: 10px;
-    margin: 20px 0;
+    margin: 12px 0 18px;
 }
 
 .proj-gallery img {
     width: 100%;
     height: 150px;
     object-fit: cover;
+    border-radius: var(--radius);
+}
+
+.airplane-screenshot-stack {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    margin: 10px auto 0;
+}
+
+.airplane-screenshot-stack img {
+    display: block;
+    width: 100%;
+    max-width: 800px;
+    height: auto;
+    object-fit: contain;
+    background: #f3f3f3;
     border-radius: var(--radius);
 }
 
