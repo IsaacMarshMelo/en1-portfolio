@@ -116,6 +116,11 @@ pre code, pre code {
     border-radius: var(--radius);
 }
 
+.proj-gallery.activity02-gallery img {
+    height: auto;
+    object-fit: contain;
+}
+
 .airplane-screenshot-stack {
     display: flex;
     flex-direction: column;
