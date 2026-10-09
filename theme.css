@@ -30,4 +30,15 @@
     /* Shape */
     --radius: 10px;
     --container-max: 800px;
+
+    /* Home page: walnut, warm linen, and brushed-metal tones */
+    --home-page: #252522;
+    --home-surface: #f3ecdf;
+    --home-card: #fffaf1;
+    --home-walnut: #3b3026;
+    --home-copper: #bd7948;
+    --home-metal: #9b9d96;
+    --home-text: #2c2924;
+    --home-muted: #655c50;
+    --home-line: rgba(74, 68, 59, 0.18);
 }
