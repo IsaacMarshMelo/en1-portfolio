@@ -143,6 +143,15 @@ pre code, pre code {
     object-fit: contain;
 }
 
+.proj-gallery.project08-gallery img {
+    height: auto;
+    object-fit: contain;
+}
+
+.proj-gallery.project08-video-gallery {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
 .airplane-screenshot-stack {
     display: flex;
     flex-direction: column;
