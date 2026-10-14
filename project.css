@@ -133,6 +133,11 @@ pre code, pre code {
     object-fit: contain;
 }
 
+.proj-gallery.project07-gallery img {
+    height: auto;
+    object-fit: contain;
+}
+
 .airplane-screenshot-stack {
     display: flex;
     flex-direction: column;
