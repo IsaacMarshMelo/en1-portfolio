@@ -20,8 +20,22 @@
     <div class="proj-container">
         <h1 class='proj-header'>Project Portfolio</h1>
         <h2 class='proj-header'>Activity 4: Programming with Sensors</h2>
+
+        <div class="proj-gallery activity04-gallery">
+            <img src="./images/Activity #4 Programming with Sensors Image.jpeg" alt="LEGO SPIKE program using a motor encoder angle to control another motor's speed">
+        </div>
+
         <div class="proj-desc">
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+            <p>This activity introduced us to controlling a motor with code that responds to a LEGO SPIKE Prime input, such as the distance, force, or color sensor, motor encoders, the hub's orientation, or its buttons. My partner and I were assigned to use one motor to control another.</p>
+            <p>We used the angle of the first motor as an input for the speed and direction of the second. For example, turning the first motor to 180 degrees made the other motor spin in one direction at 50% speed; turning it to -180 degrees made it spin in the opposite direction at 50% speed.</p>
+            <p>We found that small turns could leave the controlled motor stationary. At very low speeds, the motor did not have enough torque to start moving. To address this, we asked AI to adjust our proportional angle-to-speed strategy so the motor would reach 20% speed at 7.5 degrees, then increase proportionally to 100% at 360 degrees.</p>
+            <p>This activity showed us some of the capabilities of the SPIKE kit and gave us ideas we could use in future projects and activities. Check out this video if you want to see our motor encoder in action!</p>
+        </div>
+
+        <div class="proj-video-container">
+            <a href="https://www.youtube.com/shorts/ISh0R6tkA5E" target="_blank" rel="noopener noreferrer">
+                <img src="https://img.youtube.com/vi/ISh0R6tkA5E/hqdefault.jpg" alt="Thumbnail for the motor encoder demonstration video">
+            </a>
         </div>
     </div>
 
