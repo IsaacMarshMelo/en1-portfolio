@@ -128,6 +128,11 @@ pre code, pre code {
     object-fit: contain;
 }
 
+.proj-gallery.spirograph-gallery img {
+    height: auto;
+    object-fit: contain;
+}
+
 .airplane-screenshot-stack {
     display: flex;
     flex-direction: column;
