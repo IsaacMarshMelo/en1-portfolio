@@ -32,16 +32,23 @@ body {
     font-size: 1.5em;
 }
 
-.header .navbar {
+.header .navbar,
+.header .page-navigation {
     display: flex;
     gap: 15px;
     font-size: 1.5em;
 }
 
-.header .navbar a {
+.header .navbar a,
+.header .page-navigation a,
+.header .page-navigation span {
     text-decoration: none;
     color: var(--color-primary);
     padding: 10px;
+}
+
+.header .page-navigation .disabled {
+    opacity: 0.45;
 }
 
 /* *********************************** */
@@ -192,7 +199,8 @@ pre code, pre code {
 
 @media (max-width: 600px) {
     .header {
-        width: 92%;
+        box-sizing: border-box;
+        width: calc(100% - 24px);
         padding: 6px;
     }
 
@@ -200,9 +208,16 @@ pre code, pre code {
         font-size: 1.1em;
     }
 
-    .header .navbar {
-        font-size: 1.1em;
-        gap: 8px;
+    .header .navbar,
+    .header .page-navigation {
+        font-size: 0.9em;
+        gap: 0;
+    }
+
+    .header .navbar a,
+    .header .page-navigation a,
+    .header .page-navigation span {
+        padding: 8px 5px;
     }
 
     .proj-container {
