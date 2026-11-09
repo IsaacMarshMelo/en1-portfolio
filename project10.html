@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Project 10: Haunted House</title>
+    <link rel="stylesheet" href="./project.css">
+</head>
+<body>
+
+    <header class="header">
+        <nav class="navbar">
+            <a href="./index.html" class="active">Home</a>
+            <a href="./index.html#portfolio">Portfolio</a>
+        </nav>
+        <nav class="page-navigation" aria-label="Previous and next portfolio pages">
+            <a href="./project09.html">Previous</a>
+            <span class="disabled" aria-disabled="true">Next</span>
+        </nav>
+    </header>
+
+    <div class="proj-container">
+        <h1 class='proj-header'>Project Portfolio</h1>
+        <h2 class='proj-header'>Project 10: Haunted House</h2>
+
+        <div class="proj-desc">
+            <p>If you've made it to this part of the portfolio consider yourself lucky. Introducing The Haunted House project, possibly the best one yet. After experimenting all year with different parts of the kit, coding the hub, applications of sensors and motors, and more, as well as combining all of these ideas in one project (check out <a href="./project09.html">Project 9</a> to see how we did that), this project gave us TOTAL freedom to use the breadth of our knowledge to make something challenging.</p>
+
+            <p>We were given the task of making an interactive feature for our Nolop Haunted House event here at Tufts, along with cardboard and many other "scary" materials to accomplish that. My group and I decided to create a jump-scare feature.</p>
+
+            <p>Our concept was a form of temptation (candy or money) that when pulled, would trigger something that scares our victim. In the end, we used motors, hub-to-hub communication, cardboard, and props to create our jump scaring, interactive, Nolop Haunted House feature. To see how it works, click the video below. If you want to learn more about how we designed our mechanism, scroll down to see our code and progress photos of our design. Overall this was a fun project that challenged us to come up with creative solutions by using our kits to make something cool!</p>
+        </div>
+
+        <div class="proj-video-container">
+            <iframe src="https://www.youtube.com/embed/05ptt-8zz2E" title="Project 10: Haunted House jump-scare demonstration" allowfullscreen></iframe>
+        </div>
+
+        <div class="proj-desc">
+            <p>For the bait, we used a $100 bill movie prop. This fake was taped to a string tied around a lego piece on a motor. The mechanism is triggered when the motor is pulled.</p>
+        </div>
+
+        <div class="proj-gallery project10-gallery">
+            <img src="./images/Project 10 Money Prop IMG.JPG" alt="A $100 movie prop bill attached to a string in front of a black box">
+        </div>
+
+        <div class="proj-desc">
+            <p>The second part of our scare feature was the skull. We used a motor to click the button behind the skull turning it on triggering a mini light show with some music. Two other motors were used to open and collapse gates we made using black cardboard. The two hubs would communicate together such that when the money is pulled the gates will open and the skull is turned on, as displayed in the video above.</p>
+        </div>
+
+        <div class="proj-gallery project10-gallery">
+            <img src="./images/Project 10 Skull Prop IMG.JPG" alt="A skull prop positioned between two black cardboard gates with motors">
+        </div>
+
+        <div class="proj-desc">
+            <p>If you are interested in the code we used, see below:</p>
+        </div>
+
+        <div class="proj-code">
+            <h3>Hub A:</h3>
+            <pre><code># Hub A setup: Medium Motor on port A; Hub B listens for "!F".
+from spikecomm import Beacon
+from hub import port, sound
+import runloop
+import motor
+HOME_ANGLE = 180
+PULL_THRESHOLD = 15
+RETURN_SPEED = 1050
+RETURN_DELAY_MS = 300
+CHECK_INTERVAL_MS = 20
+READY_BROADCAST_INTERVAL_MS = 100
+fire_beacon = Beacon("!F")
+def broadcast_fire_state(value):
+    # The message protocol is 0 = ready, 1 = pull detected.
+    fire_beacon.broadcast(value)
+async def return_home():
+    # Leave a short pause before the motor moves back.
+    await runloop.sleep_ms(RETURN_DELAY_MS)
+    await motor.run_to_absolute_position(port.A, HOME_ANGLE, RETURN_SPEED)
+async def handle_pull():
+    broadcast_fire_state(1)
+    print("Pull detected: broadcast 1")
+    await return_home()
+async def watch_for_pulls():
+    # Measure each pull from the position reached after the last return.
+    home_position = motor.relative_position(port.A)
+    time_since_ready_broadcast_ms = READY_BROADCAST_INTERVAL_MS
+    while True:
+        current_position = motor.relative_position(port.A)
+        if abs(current_position - home_position) >= PULL_THRESHOLD:
+            await handle_pull()
+            home_position = motor.relative_position(port.A)
+            # Hub B must see 0 before it can accept another 1.
+            broadcast_fire_state(0)
+            time_since_ready_broadcast_ms = 0
+        elif time_since_ready_broadcast_ms >= READY_BROADCAST_INTERVAL_MS:
+            broadcast_fire_state(0)
+            time_since_ready_broadcast_ms = 0
+        await runloop.sleep_ms(CHECK_INTERVAL_MS)
+        time_since_ready_broadcast_ms += CHECK_INTERVAL_MS
+async def main():
+    await return_home()
+    await watch_for_pulls()
+runloop.run(main())</code></pre>
+        </div>
+
+        <div class="proj-code">
+            <h3>Hub B:</h3>
+            <pre><code># Hub B setup: gate motors on ports E and F.
+
+# Hub A broadcasts 0 when ready and 1 when a pull is detected.
+from spikecomm import Scanner
+from hub import port
+import runloop
+import motor
+import motor_pair
+
+# Original values in the comments
+GATE_SPEED = 495
+GATE_ANGLE = 80 # 55
+WAIT_TIME_MS = 5000 # 5000
+CHECK_INTERVAL_MS = 20
+D_MOTOR_SPEED = 660
+fire_received = False
+armed = False
+gate_busy = False
+def on_fire(values):
+    global fire_received, armed
+    # Ignore messages while the gate moves, and reject unexpected formats.
+    if gate_busy or len(values) != 1:
+        return
+    if values[0] == 0:
+        # A ready message permits the next pull to trigger the gate.
+        armed = True
+    elif values[0] == 1 and armed:
+        # Disarm immediately so repeated reports of 1 cannot retrigger it.
+        armed = False
+        fire_received = True
+    print("Pull signal accepted")
+async def wait_for_pull():
+    global fire_received
+    while not fire_received:
+        await runloop.sleep_ms(CHECK_INTERVAL_MS)
+    fire_received = False
+async def move_gate(degrees):
+    # Both gate motors move together; the sign selects open or close.
+    if degrees &gt; 0:
+        gate_speed = GATE_SPEED
+    else:
+        gate_speed = -GATE_SPEED
+    await motor_pair.move_tank_for_degrees(
+        motor_pair.PAIR_1, abs(degrees), gate_speed, gate_speed
+    )
+async def click_button():
+    await motor.run_for_degrees(port.D, 55, D_MOTOR_SPEED)
+    await motor.run_for_degrees(port.D, -55, D_MOTOR_SPEED)
+async def run_gate_sequence():
+    motor_pair.pair(motor_pair.PAIR_1, port.E, port.F)
+    await move_gate(GATE_ANGLE)
+    await click_button()
+    await runloop.sleep_ms(WAIT_TIME_MS)
+    await move_gate(-GATE_ANGLE)
+    await click_button()
+    motor_pair.unpair(motor_pair.PAIR_1)
+async def main():
+    global armed, gate_busy
+    scanner = Scanner("!F")
+    scanner.listen(on_fire)
+    print("Waiting for 0, then 1")
+    while True:
+        await wait_for_pull()
+        gate_busy = True
+        await run_gate_sequence()
+        # Require a ready message received after the gate closes.
+        armed = False
+        gate_busy = False
+        print("Gate closed; waiting for 0, then 1")
+runloop.run(main())</code></pre>
+        </div>
+    </div>
+
+</body>
+</html>
