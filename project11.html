@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Project 11: High or Low</title>
+    <link rel="stylesheet" href="./project.css">
+</head>
+<body>
+
+    <header class="header">
+        <nav class="navbar">
+            <a href="./index.html" class="active">Home</a>
+            <a href="./index.html#portfolio">Portfolio</a>
+        </nav>
+        <nav class="page-navigation" aria-label="Previous and next portfolio pages">
+            <a href="./project10.html">Previous</a>
+            <span class="disabled" aria-disabled="true">Next</span>
+        </nav>
+    </header>
+
+    <div class="proj-container">
+        <h1 class='proj-header'>Project Portfolio</h1>
+        <h2 class='proj-header'>Project 11: High or Low</h2>
+
+        <div class="proj-img-container">
+            <img src="./images/Project 11 High or Low Card image.png" alt="A LEGO SPIKE hub and distance sensor beneath a sign marked Short and Tall">
+        </div>
+
+        <div class="proj-desc">
+            <p>This project challenged me to create a supervised classification device that can identify “high” versus “low” heights using a trained model. The program has two modes:</p>
+
+            <ol>
+                <li><strong>Training (Learning) Mode:</strong> The hub reads and stores pairs of distance sensor readings and motor positions.</li>
+                <li><strong>Inference (Prediction) Mode:</strong> For a new distance sensor reading, the program finds the nearest training samples and uses their motor positions to make a prediction.</li>
+            </ol>
+
+            <p>In Training Mode, the hub displayed “TRAIN” on its light matrix. As I raised and lowered the hub, I pressed the left button to record a distance reading and its matching motor position for a height I considered “high” or “low.” Pressing the right button ended training and started Prediction Mode. I could then raise the hub to a height, and it used the closest recorded samples to predict whether the height was high or low.</p>
+
+            <p>To see the project in action, watch the video below.</p>
+        </div>
+
+        <div class="proj-video-container">
+            <iframe src="https://www.youtube.com/embed/dV3fDJM908A" title="Project 11: High or Low demonstration" allowfullscreen></iframe>
+        </div>
+
+        <div class="proj-desc">
+            <p>If you are interested in the code, see the screenshots below.</p>
+        </div>
+
+        <div class="proj-gallery project11-code-gallery">
+            <figure>
+                <img src="./images/Screenshot 2026-11-08 200024.png" alt="Screenshot of the project code for setup and training mode">
+                <figcaption>Code setup and training mode.</figcaption>
+            </figure>
+            <figure>
+                <img src="./images/Screenshot 2026-11-08 200051.png" alt="Screenshot of the project code for nearest-neighbor prediction mode">
+                <figcaption>Nearest-neighbor prediction mode.</figcaption>
+            </figure>
+        </div>
+    </div>
+
+</body>
+</html>
